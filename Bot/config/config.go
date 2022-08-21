@@ -11,4 +11,8 @@ var Pref = tele.Settings{
 	Poller: &tele.LongPoller{Timeout: 10 * time.Second},
 }
 
-var Bot, _ = tele.NewBot(Pref)
+var (
+	Bot, _ = tele.NewBot(Pref)
+	Admins = []int64{78246181}
+	Gift   = 1
+)
