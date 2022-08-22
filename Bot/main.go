@@ -1,16 +1,7 @@
 package main
 
-import (
-	"dogegambling/config"
-	"dogegambling/handlers"
-	"fmt"
-)
+import "fmt"
 
 func main() {
-
-	handlers.Init()
-
-	fmt.Println("Bot Started ...")
-	config.Bot.Start()
-
+	fmt.Println("HelloWorld")
 }
