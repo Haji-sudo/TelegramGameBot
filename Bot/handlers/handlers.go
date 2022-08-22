@@ -22,6 +22,10 @@ func Init() {
 		return ctx.Send("GameBoard", GameMenu)
 	})
 
+	c.Bot.Handle(&BtnDice, func(ctx telebot.Context) error {
+		return ctx.Send("ok", DiceMenu)
+	})
+
 	c.Bot.Handle(&BtnHome, func(ctx telebot.Context) error {
 		return ctx.Send("Home", MainMenu)
 	})
