@@ -3,8 +3,6 @@ package handlers
 import (
 	db "dogegambling/config/DB"
 	"encoding/json"
-	"fmt"
-	"log"
 	"strconv"
 	"time"
 
@@ -14,9 +12,16 @@ import (
 )
 
 type UserRedis struct {
-	UserID   int64     `json:"user_id"`
-	Lock     bool      `json:"lock"`
-	TimeSpam time.Time `json:"time_spam"`
+	UserID   int64 `json:"user_id"`
+	Lock     bool  `json:"lock"`
+	TimeSpam int64 `json:"time_spam"`
+}
+
+func (u *UserRedis) Bind(userid int64) {
+	u.UserID = userid
+	u.Lock = false
+	u.TimeSpam = time.Now().Unix()
+
 }
 
 var rdb *redis.Client
@@ -26,29 +31,39 @@ func UserInit() {
 	rdb, ctx = db.InitRedisdb()
 }
 
-func (u *UserRedis) CreateUser() bool {
+func (u *UserRedis) CreateUser() {
 	userdata, _ := json.Marshal(u)
-
-	user, err := rdb.Set(ctx, strconv.FormatInt(u.UserID, 10), userdata, 0).Result()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println(user)
-
-	return true
+	rdb.Set(ctx, strconv.FormatInt(u.UserID, 10), userdata, 0).Result()
 }
 
 func GetUser(userid int64) UserRedis {
 
 	user, err := rdb.Get(ctx, strconv.FormatInt(userid, 10)).Result()
 
-	if err != nil {
-		log.Println(err)
-	}
 	if err == redis.Nil {
 		return UserRedis{}
 	}
 	userdata := UserRedis{}
 	json.Unmarshal([]byte(user), &userdata)
 	return userdata
+}
+
+func (u UserRedis) Exist() bool {
+
+	return u != UserRedis{}
+}
+
+func (u *UserRedis) update() {
+	userdata, _ := json.Marshal(u)
+	rdb.Set(ctx, strconv.FormatInt(u.UserID, 10), userdata, 0).Result()
+}
+
+func (u *UserRedis) UpdateTime() {
+	u.TimeSpam = time.Now().Unix()
+
+}
+
+func (u *UserRedis) LockUser(lock bool) {
+	u.Lock = lock
+	u.update()
 }

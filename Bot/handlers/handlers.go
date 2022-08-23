@@ -2,7 +2,6 @@ package handlers
 
 import (
 	c "dogegambling/config"
-	"time"
 
 	"strconv"
 
@@ -17,12 +16,18 @@ func Init() {
 	Admin.Use(middleware.Whitelist(c.Admins...))
 
 	c.Bot.Handle("/start", func(ctx b.Context) error {
+		user := GetUser(ctx.Chat().ID)
 
-		userR := GetUser(ctx.Chat().ID)
-		if userR == (UserRedis{}) {
-			userR = UserRedis{UserID: ctx.Chat().ID, Lock: false, TimeSpam: time.Now()}
-			userR.CreateUser()
+		//Check User Exist if Not CreateUser
+		if !user.Exist() {
+			user.Bind(ctx.Chat().ID)
+			user.CreateUser()
 		}
+
+		user.LockUser(true)
+		user.UpdateTime()
+		defer user.LockUser(false)
+
 		link := "tg://user?id=" + strconv.FormatInt(ctx.Chat().ID, 10)
 		return ctx.Send(START(ctx.Chat().FirstName, link), MainMenu, b.ModeMarkdown)
 	})
@@ -37,6 +42,7 @@ func Init() {
 	})
 
 	c.Bot.Handle(&BtnHome, func(ctx b.Context) error {
+
 		return ctx.Send("Home", MainMenu)
 	})
 
