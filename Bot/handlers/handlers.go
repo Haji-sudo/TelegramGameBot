@@ -24,9 +24,9 @@ func Init() {
 			user.CreateUser()
 		}
 
-		user.LockUser(true)
+		user.lock()
 		user.UpdateTime()
-		defer user.LockUser(false)
+		defer user.unlock()
 
 		link := "tg://user?id=" + strconv.FormatInt(ctx.Chat().ID, 10)
 		return ctx.Send(START(ctx.Chat().FirstName, link), MainMenu, b.ModeMarkdown)
@@ -44,6 +44,14 @@ func Init() {
 	c.Bot.Handle(&BtnHome, func(ctx b.Context) error {
 
 		return ctx.Send("Home", MainMenu)
+	})
+
+	c.Bot.Handle(&BtnAccount, func(ctx b.Context) error {
+		user := GetUser(ctx.Chat().ID)
+		user.lock()
+		defer user.unlock()
+
+		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 20, 0, 1, 10, 0, "`dsada`"), b.ModeMarkdown)
 	})
 
 }

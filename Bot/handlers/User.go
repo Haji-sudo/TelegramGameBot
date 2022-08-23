@@ -63,7 +63,11 @@ func (u *UserRedis) UpdateTime() {
 
 }
 
-func (u *UserRedis) LockUser(lock bool) {
-	u.Lock = lock
+func (u *UserRedis) lock() {
+	u.Lock = true
+	u.update()
+}
+func (u *UserRedis) unlock() {
+	u.Lock = false
 	u.update()
 }
