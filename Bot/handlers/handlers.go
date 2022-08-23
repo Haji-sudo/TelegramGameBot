@@ -48,7 +48,7 @@ func Init() {
 
 	c.Bot.Handle(&BtnAccount, func(ctx b.Context) error {
 		user := GetUser(ctx.Chat().ID)
-		user.lock()
+
 		defer user.unlock()
 
 		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 20, 0, 1, 10, 0, "`adsuhbiasndlkasnkldnask`"), b.ModeMarkdown)

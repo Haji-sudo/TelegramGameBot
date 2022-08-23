@@ -13,13 +13,13 @@ import (
 
 type UserRedis struct {
 	UserID   int64 `json:"user_id"`
-	Lock     bool  `json:"lock"`
+	IsLock   bool  `json:"lock"`
 	TimeSpam int64 `json:"time_spam"`
 }
 
 func (u *UserRedis) Bind(userid int64) {
 	u.UserID = userid
-	u.Lock = false
+	u.IsLock = false
 	u.TimeSpam = time.Now().Unix()
 
 }
@@ -64,10 +64,10 @@ func (u *UserRedis) UpdateTime() {
 }
 
 func (u *UserRedis) lock() {
-	u.Lock = true
+	u.IsLock = true
 	u.update()
 }
 func (u *UserRedis) unlock() {
-	u.Lock = false
+	u.IsLock = false
 	u.update()
 }
