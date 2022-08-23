@@ -51,7 +51,7 @@ func Init() {
 		user.lock()
 		defer user.unlock()
 
-		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 20, 0, 1, 10, 0, "`dsada`"), b.ModeMarkdown)
+		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 20, 0, 1, 10, 0, "`adsuhbiasndlkasnkldnask`"), b.ModeMarkdown)
 	})
 
 }
