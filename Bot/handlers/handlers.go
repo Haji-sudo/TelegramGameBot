@@ -2,6 +2,8 @@ package handlers
 
 import (
 	c "dogegambling/config"
+	"time"
+
 	"strconv"
 
 	b "gopkg.in/telebot.v3"
@@ -9,11 +11,18 @@ import (
 )
 
 func Init() {
+	UserInit()
 	MenuInint()
 	Admin := c.Bot.Group()
 	Admin.Use(middleware.Whitelist(c.Admins...))
 
 	c.Bot.Handle("/start", func(ctx b.Context) error {
+
+		userR := GetUser(ctx.Chat().ID)
+		if userR == (UserRedis{}) {
+			userR = UserRedis{UserID: ctx.Chat().ID, Lock: false, TimeSpam: time.Now()}
+			userR.CreateUser()
+		}
 		link := "tg://user?id=" + strconv.FormatInt(ctx.Chat().ID, 10)
 		return ctx.Send(START(ctx.Chat().FirstName, link), MainMenu, b.ModeMarkdown)
 	})

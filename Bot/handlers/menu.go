@@ -13,22 +13,24 @@ var (
 	BtnReferrals = MainMenu.Text("Referrals 👥")
 	BtnFAQ       = MainMenu.Text("FAQ ❓")
 	BtnAccount   = MainMenu.Text("Account 👤")
+	BtnHome      = MainMenu.Text("Home 🏠")
 )
 
 var (
-	GameMenu = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	BtnDice  = GameMenu.Text("Dice 🎲")
-	BtnHome  = GameMenu.Text("Home 🏠")
+	GameMenu   = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	BtnDice    = GameMenu.Text("Dice 🎲")
+	BtnBowling = GameMenu.Text("Bowling 🎳")
+	BtnDart    = GameMenu.Text("Dart 🎯")
+	BtnSlot    = GameMenu.Text("Slot 🎰")
 )
 var (
-	DiceMenu    = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	Btn1        = DiceMenu.Text("1")
-	Btn2        = DiceMenu.Text("2")
-	Btn3        = DiceMenu.Text("3")
-	Btn4        = DiceMenu.Text("4")
-	Btn5        = DiceMenu.Text("5")
-	Btn6        = DiceMenu.Text("6")
-	BtnNoneDice = DiceMenu.Text("🎲")
+	DiceMenu = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	Btn1     = DiceMenu.Text("1")
+	Btn2     = DiceMenu.Text("2")
+	Btn3     = DiceMenu.Text("3")
+	Btn4     = DiceMenu.Text("4")
+	Btn5     = DiceMenu.Text("5")
+	Btn6     = DiceMenu.Text("6")
 )
 
 func MenuInint() {
@@ -49,6 +51,6 @@ func MenuInint() {
 		DiceMenu.Row(Btn1, Btn2),
 		DiceMenu.Row(Btn3, Btn4),
 		DiceMenu.Row(Btn5, Btn6),
-		DiceMenu.Row(BtnNoneDice),
+		DiceMenu.Row(BtnHome),
 	)
 }
