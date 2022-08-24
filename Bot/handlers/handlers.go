@@ -9,8 +9,8 @@ import (
 	"gopkg.in/telebot.v3/middleware"
 )
 
-func Init() {
-	UserInit()
+func (h Handler) Init() {
+	h.UserInit()
 	MenuInint()
 	Admin := c.Bot.Group()
 	Admin.Use(middleware.Whitelist(c.Admins...))
@@ -48,10 +48,10 @@ func Init() {
 
 	c.Bot.Handle(&BtnAccount, func(ctx b.Context) error {
 		user := GetUser(ctx.Chat().ID)
-
+		user.lock()
 		defer user.unlock()
 
-		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 20, 0, 1, 10, 0, "`adsuhbiasndlkasnkldnask`"), b.ModeMarkdown)
+		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 1, 10, 0, "`adsuhbiasndlkasnkldnask`"), b.ModeMarkdown)
 	})
 
 }

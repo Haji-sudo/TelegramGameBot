@@ -16,16 +16,12 @@ __Also You Can Invite Your Friends And Earn **DOGE Coin**__
 **For More Information GoTo FAQ ❓ Menu**`, name, link)
 }
 
-func ACCOUNT(name string, balance float64, totaldeposit float64, totalwithdraw float64, referrals int, EarnFromRef int, warning int, wallet string) string {
+func ACCOUNT(name string, balance float64, referrals int, EarnFromRef int, warning int, wallet string) string {
 	return fmt.Sprintf(`ℹ️ **INFORMATION**
 
 	👤 __Name__: **%v**
 	
 	💰 __Balance__: **%vÐ**
-	
-	📥 __Total Deposit__: **%vÐ**
-	
-	📤 __Total Withdraw__: **%vÐ**
 	
 	👥 __Total Referrals__: **%v**
 	
@@ -33,5 +29,5 @@ func ACCOUNT(name string, balance float64, totaldeposit float64, totalwithdraw f
 	
 	⛔ __Warning__: **%v**
 	
-	💳 **Wallet Address**: %v`, name, balance, totaldeposit, totalwithdraw, referrals, EarnFromRef, warning, wallet)
+	💳 **Wallet Address**: %v`, name, balance, referrals, EarnFromRef, warning, wallet)
 }

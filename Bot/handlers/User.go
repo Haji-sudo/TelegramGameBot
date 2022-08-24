@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	db "dogegambling/config/DB"
 	"encoding/json"
 	"strconv"
 	"time"
@@ -11,11 +10,10 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-type UserRedis struct {
-	UserID   int64 `json:"user_id"`
-	IsLock   bool  `json:"lock"`
-	TimeSpam int64 `json:"time_spam"`
-}
+var (
+	rdb *redis.Client
+	ctx context.Context
+)
 
 func (u *UserRedis) Bind(userid int64) {
 	u.UserID = userid
@@ -24,11 +22,8 @@ func (u *UserRedis) Bind(userid int64) {
 
 }
 
-var rdb *redis.Client
-var ctx context.Context
-
-func UserInit() {
-	rdb, ctx = db.InitRedisdb()
+func (h Handler) UserInit() {
+	rdb, ctx, _ = h.RDB, h.CTX, h.DB
 }
 
 func (u *UserRedis) CreateUser() {
@@ -60,13 +55,13 @@ func (u *UserRedis) update() {
 
 func (u *UserRedis) UpdateTime() {
 	u.TimeSpam = time.Now().Unix()
-
 }
 
 func (u *UserRedis) lock() {
 	u.IsLock = true
 	u.update()
 }
+
 func (u *UserRedis) unlock() {
 	u.IsLock = false
 	u.update()
