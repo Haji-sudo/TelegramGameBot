@@ -14,5 +14,5 @@ var Pref = tele.Settings{
 var (
 	Bot, _ = tele.NewBot(Pref)
 	Admins = []int64{78246181}
-	Gift   = 1
+	Gift   = 0.5
 )

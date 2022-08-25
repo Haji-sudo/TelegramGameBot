@@ -1,17 +1,21 @@
 package main
 
 import (
+	"context"
 	"dogegambling/config"
-	psdb "dogegambling/config/DataBase/Postgres"
-	rddb "dogegambling/config/DataBase/Redis"
+	p "dogegambling/config/DataBase/Postgresql"
+	r "dogegambling/config/DataBase/Redis"
 	"dogegambling/handlers"
 	"fmt"
 )
 
 func NewHandler() handlers.Handler {
-	DB := psdb.InitPostgredb()
-	rdb, ctx := rddb.InitRedisdb()
-	return handlers.Handler{RDB: rdb, CTX: ctx, DB: DB}
+	db := handlers.Handler{
+		RDB: r.InitRedisdb(),
+		CTX: context.Background(),
+		DB:  p.InitPostgredb(),
+	}
+	return db
 
 }
 func main() {

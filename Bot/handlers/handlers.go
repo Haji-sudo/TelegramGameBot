@@ -17,17 +17,12 @@ func (h Handler) Init() {
 
 	c.Bot.Handle("/start", func(ctx b.Context) error {
 		user := GetUser(ctx.Chat().ID)
-
-		//Check User Exist if Not CreateUser
 		if !user.Exist() {
-			user.Bind(ctx.Chat().ID)
-			user.CreateUser()
+			user.CreateUser(ctx.Chat().ID)
 		}
-
 		user.lock()
 		user.UpdateTime()
 		defer user.unlock()
-
 		link := "tg://user?id=" + strconv.FormatInt(ctx.Chat().ID, 10)
 		return ctx.Send(START(ctx.Chat().FirstName, link), MainMenu, b.ModeMarkdown)
 	})
@@ -42,6 +37,8 @@ func (h Handler) Init() {
 	})
 
 	c.Bot.Handle(&BtnHome, func(ctx b.Context) error {
+		user := GetUser(ctx.Chat().ID)
+		user.ChangeLocation("main")
 
 		return ctx.Send("Home", MainMenu)
 	})
@@ -51,7 +48,9 @@ func (h Handler) Init() {
 		user.lock()
 		defer user.unlock()
 
-		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, 99, 1, 10, 0, "`adsuhbiasndlkasnkldnask`"), b.ModeMarkdown)
+		userdata := GetUserFromDB(ctx.Chat().ID)
+		link := "tg://user?id=" + strconv.FormatInt(ctx.Chat().ID, 10)
+		return ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, userdata.Wallet), b.ModeMarkdown)
 	})
 
 }

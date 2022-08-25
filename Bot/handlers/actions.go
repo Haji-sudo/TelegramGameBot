@@ -9,25 +9,23 @@ func START(name string, link string) string {
 
 __Welcome to Doge Finance 🐶__
 	
-__You Can **INVEST** or **PLAY** and **BET** here__
+__You Can **PLAY** and **BET** here__
 	
 __Also You Can Invite Your Friends And Earn **DOGE Coin**__
 	
 **For More Information GoTo FAQ ❓ Menu**`, name, link)
 }
 
-func ACCOUNT(name string, balance float64, referrals int, EarnFromRef int, warning int, wallet string) string {
+func ACCOUNT(name string, link string, balance float32, referrals uint, warning byte, wallet string) string {
 	return fmt.Sprintf(`ℹ️ **INFORMATION**
 
-	👤 __Name__: **%v**
+	👤 __Name__: **[%v](%v)**
 	
 	💰 __Balance__: **%vÐ**
 	
 	👥 __Total Referrals__: **%v**
 	
-	🎁 __Total Earn From Referrals__: **%vÐ**
-	
 	⛔ __Warning__: **%v**
 	
-	💳 **Wallet Address**: %v`, name, balance, referrals, EarnFromRef, warning, wallet)
+	💳 **Wallet Address**: %v`, name, link, balance, referrals, warning, wallet)
 }
