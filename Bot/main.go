@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
+	p "dogegambling/DataBase/Postgresql"
+	r "dogegambling/DataBase/Redis"
 	"dogegambling/config"
-	p "dogegambling/config/DataBase/Postgresql"
-	r "dogegambling/config/DataBase/Redis"
 	"dogegambling/handlers"
 	"fmt"
 )
