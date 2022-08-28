@@ -1,11 +1,14 @@
 package DataBase
 
 import (
+	"fmt"
+
 	"github.com/go-redis/redis/v8"
 )
 
-func InitRedisdb() *redis.Client {
-	opt, err := redis.ParseURL("redis://default:redispw@localhost:49153/0")
+func InitRedisdb(user, pass, server, port, db string) *redis.Client {
+	redisURL := fmt.Sprintf("redis://%v:%v@%v:%v/%v", user, pass, server, port, db)
+	opt, err := redis.ParseURL(redisURL)
 	if err != nil {
 		panic(err)
 	}

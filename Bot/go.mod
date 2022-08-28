@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/go-redis/redis/v8 v8.11.5
 	gopkg.in/telebot.v3 v3.0.0
+	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/postgres v1.3.9
 	gorm.io/gorm v1.23.8
 )

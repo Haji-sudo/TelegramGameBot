@@ -41,3 +41,25 @@ type Payment struct {
 	Amount    float32 `json:"amount gorm:check:amount > 0"`
 	Date      int64   `json:"time"`
 }
+
+type Config struct {
+	Redis struct {
+		User   string `yaml:"user"`
+		Pass   string `yaml:"pass"`
+		Server string `yaml:"server"`
+		Port   string `yaml:"port"`
+		DB     string `yaml:"db"`
+	} `yaml:"redisdb"`
+	Postgresql struct {
+		User   string `yaml:"user"`
+		Pass   string `yaml:"pass"`
+		Server string `yaml:"server"`
+		Port   string `yaml:"port"`
+		DB     string `yaml:"db"`
+	} `yaml:"posgresql"`
+	BlockIO struct {
+		Token   string `yaml:"token"`
+		Pin     string `yaml:"pin"`
+		Webhook string `yaml:"webhookurl"`
+	} `yaml:"blockio"`
+}
