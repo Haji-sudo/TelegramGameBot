@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	gateway "dogegambling/Gateway"
 	"dogegambling/config"
 	"encoding/json"
 	"fmt"
@@ -116,5 +117,9 @@ func (u *User) UpdateWalletAddress(wallet string) {
 func (u *User) AddReferral() {
 	u.Referrals += 1
 	u.Balance += float32(config.Gift)
+	DB.Save(&u)
+}
+func (u *User) CreateDepositAddress() {
+	u.DepositAddress = gateway.GenerateAddress()
 	DB.Save(&u)
 }

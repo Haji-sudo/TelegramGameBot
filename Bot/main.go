@@ -23,7 +23,7 @@ func main() {
 
 	handler := NewHandler()
 	handler.Init()
-	gateway.Init("", "", "")
+	gateway.Init("a54c-cc48-2b69-b76c", "p3iphuPo5aswUs4pazed", "")
 	fmt.Println("Bot Started ...")
 	config.Bot.Start()
 

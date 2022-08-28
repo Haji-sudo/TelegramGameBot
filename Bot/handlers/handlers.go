@@ -51,7 +51,20 @@ func (h Handler) Init() {
 
 		return nil
 	})
+	c.Bot.Handle(&BtnDeposit, func(ctx b.Context) error {
+		UserID := ctx.Chat().ID
+		if !UserExist(UserID) {
+			return ctx.Send("Please /start Again")
+		}
+		user := GetUserFromDB(UserID)
+		if user.DepositAddress == "" {
+			user.CreateDepositAddress()
+		}
 
+		ctx.Send(DEPOSIT(user.DepositAddress), b.ModeMarkdown)
+
+		return nil
+	})
 	c.Bot.Handle(b.OnText, func(ctx b.Context) error {
 		input := ctx.Text()
 		UserID := ctx.Chat().ID

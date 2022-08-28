@@ -29,3 +29,9 @@ func ACCOUNT(name string, link string, balance float32, referrals uint, warning 
 	
 	💳 **Wallet Address**: %v`, name, link, balance, referrals, warning, wallet)
 }
+
+func DEPOSIT(deposit string) string {
+	return fmt.Sprintf(`ℹ️ **Deposit**
+	
+	💳 **Wallet Address**: %v`, deposit)
+}
