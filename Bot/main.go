@@ -11,27 +11,46 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"gopkg.in/yaml.v3"
 )
 
 func main() {
 
+	var ( //Color For Console
+		colorGreen  = "\033[32m"
+		colorCyan   = "\033[36m"
+		colorReset  = "\033[0m"
+		colorPurple = "\033[35m"
+		colorYellow = "\033[33m"
+		colorBlue   = "\033[34m"
+	)
+
 	cfgPath, err := ParseFlags()
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg, err := NewConfig(cfgPath)
+	fmt.Println(string(colorGreen), "\n\t The config has been loaded .")
+	time.Sleep(time.Second * 1)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	fmt.Println(string(colorPurple), "\n\t The Handlers Setting up .. ")
+	time.Sleep(time.Second * 1)
+
 	handler := NewHandler(cfg)
 	handler.Init()
+	fmt.Println(string(colorBlue), "\n\t The Handlers Launched ...")
 
+	fmt.Println(string(colorYellow), "\n\t The Gateway Setting up .... ")
+	time.Sleep(time.Second * 1)
 	gateway.Init(cfg.BlockIO.Token, cfg.BlockIO.Pin, cfg.BlockIO.Webhook)
 
-	fmt.Println("Bot Started ...")
+	fmt.Println(string(colorCyan), "\n\t Bot Started ....", string(colorReset))
 	config.Bot.Start()
 
 }
