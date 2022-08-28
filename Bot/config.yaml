@@ -1,0 +1,18 @@
+redisdb:
+  user:"default"
+  pass:"redispw"
+  server:"localhost"
+  port:"49153"
+  db:"0" #defult db 0
+
+posgresql:
+  user:"postgres"
+  pass:"docker"
+  server:"localhost"
+  port:"5432"
+  db:"gambelDB"
+
+blockio:
+  token:""
+  pin:""
+  webhookurl:""

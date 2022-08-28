@@ -1,11 +1,14 @@
 package gateway
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os/exec"
+	"runtime"
 	"strconv"
 )
 
@@ -27,18 +30,29 @@ type GetBalanceSchema struct {
 		PendingReceivedBalance string `json:"pending_received_balance"`
 	} `json:"data"`
 }
+type WithdrawSchema struct {
+	Status string `json:"status"`
+	Data   struct {
+		Network string `json:"network"`
+		Txid    string `json:"txid"`
+	} `json:"data"`
+}
 
-var Token = ""
-var WebHookURL = ""
+var (
+	token string
+	pin   string
+	//webHookURL string
+)
 
-func Init(token string, webhook_url string) {
-	Token = token
-	WebHookURL = webhook_url
+func Init(Token string, Pin string, webhook string) {
+	token = Token
+	//webHookURL = webhook
+	pin = Pin
 }
 
 func GetBalance() float64 {
 
-	url := fmt.Sprintf("https://block.io/api/v2/get_balance/?api_key=%v", Token)
+	url := fmt.Sprintf("https://block.io/api/v2/get_balance/?api_key=%v", token)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Printf("Error in GetBalance http Request : %v", err)
@@ -59,7 +73,7 @@ func GetBalance() float64 {
 }
 
 func GenerateAddress() string {
-	url := fmt.Sprintf("https://block.io/api/v2/get_new_address/?api_key=%v", Token)
+	url := fmt.Sprintf("https://block.io/api/v2/get_new_address/?api_key=%v", token)
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Printf("Error in GetAddress http Request : %v", err)
@@ -75,4 +89,32 @@ func GenerateAddress() string {
 		log.Printf("Error in Parse response to GetAddress object : %v", err)
 	}
 	return result.Data.Address
+}
+func Withdraw(amount float64, to_address string) (WithdrawSchema, error) {
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("python", "withdraw.py", token, pin, fmt.Sprintf("%f", amount), to_address)
+	} else {
+		cmd = exec.Command("python3", "withdraw.py", token, pin, fmt.Sprintf("%f", amount), to_address)
+	}
+
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Printf("Error in cmd.StdoutPipe() : %v", err)
+		return WithdrawSchema{}, err
+	}
+	err = cmd.Start()
+	if err != nil {
+		log.Printf("Error in cmd.Start() : %v", err)
+		return WithdrawSchema{}, err
+	}
+	scanner := bufio.NewScanner(stdout)
+	result := ""
+	for scanner.Scan() {
+		result += scanner.Text()
+	}
+
+	data := WithdrawSchema{}
+	json.Unmarshal([]byte(result), &data)
+	return data, nil
 }

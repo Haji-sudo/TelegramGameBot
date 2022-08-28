@@ -15,7 +15,6 @@ func (h Handler) Init() {
 	MenuInint()
 	Admin := c.Bot.Group()
 	Admin.Use(middleware.Whitelist(c.Admins...))
-
 	c.Bot.Handle("/start", func(ctx b.Context) error {
 		UserID := ctx.Chat().ID
 		if !UserExist(UserID) {

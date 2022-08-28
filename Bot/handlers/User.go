@@ -95,7 +95,9 @@ func CreateInPostgres(userid int64) { //Create User in Postgresql
 	}
 }
 func UserExistInDB(userid int64) bool {
-	return GetUserFromDB(userid) != User{}
+	user := User{}
+	result := DB.Select(&user, userid)
+	return result.RowsAffected > 0
 }
 func GetUserFromDB(userid int64) User {
 	user := User{}
