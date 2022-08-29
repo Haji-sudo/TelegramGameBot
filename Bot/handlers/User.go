@@ -50,6 +50,7 @@ func GetUser(userid int64) UserRedis { //Return User From Redis
 	json.Unmarshal([]byte(user), &userdata)
 	return userdata
 }
+
 func UserExist(userid int64) bool { //Check User Exist Without dependency
 	_, err := rdb.Get(ctx, strconv.FormatInt(userid, 10)).Result()
 
@@ -83,6 +84,10 @@ func (u *UserRedis) unlock() { //unLock User in Redis
 }
 func (u *UserRedis) ChangeLocation(loc string) {
 	u.Location = loc
+	u.update()
+}
+func (u *UserRedis) SetBetAmount(amount float32) {
+	u.AmountofBet = amount
 	u.update()
 }
 
@@ -122,4 +127,8 @@ func (u *User) AddReferral() {
 func (u *User) CreateDepositAddress() {
 	u.DepositAddress = gateway.GenerateAddress()
 	DB.Save(&u)
+}
+func UserBalance(userid int64) float32 {
+	user := GetUserFromDB(int64(userid))
+	return user.Balance
 }

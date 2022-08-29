@@ -11,49 +11,51 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"gopkg.in/yaml.v3"
 )
 
+var ( //Color For Console
+	colorGreen  = "\033[32m"
+	colorCyan   = "\033[36m"
+	colorReset  = "\033[0m"
+	colorPurple = "\033[35m"
+	colorYellow = "\033[33m"
+	colorBlue   = "\033[34m"
+)
+
 func main() {
+	LoadConfigAndServeHandlers()
+	fmt.Println(string(colorCyan), "\n\t Bot Started ....", string(colorReset))
+	config.Bot.Start()
 
-	var ( //Color For Console
-		colorGreen  = "\033[32m"
-		colorCyan   = "\033[36m"
-		colorReset  = "\033[0m"
-		colorPurple = "\033[35m"
-		colorYellow = "\033[33m"
-		colorBlue   = "\033[34m"
-	)
+}
 
+func LoadConfigAndServeHandlers() {
 	cfgPath, err := ParseFlags()
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg, err := NewConfig(cfgPath)
 	fmt.Println(string(colorGreen), "\n\t The config has been loaded .")
-	time.Sleep(time.Second * 1)
+	// time.Sleep(time.Second * 1)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println(string(colorPurple), "\n\t The Handlers Setting up .. ")
-	time.Sleep(time.Second * 1)
+	// time.Sleep(time.Second * 1)
 
 	handler := NewHandler(cfg)
 	handler.Init()
 	fmt.Println(string(colorBlue), "\n\t The Handlers Launched ...")
 
 	fmt.Println(string(colorYellow), "\n\t The Gateway Setting up .... ")
-	time.Sleep(time.Second * 1)
+	// time.Sleep(time.Second * 1)
 	gateway.Init(cfg.BlockIO.Token, cfg.BlockIO.Pin, cfg.BlockIO.Webhook)
-
-	fmt.Println(string(colorCyan), "\n\t Bot Started ....", string(colorReset))
-	config.Bot.Start()
-
 }
+
 func NewHandler(c handlers.Config) handlers.Handler {
 	db := handlers.Handler{
 		RDB: r.InitRedisdb(c.Redis.User, c.Redis.Pass, c.Redis.Server, c.Redis.Port, c.Redis.DB),

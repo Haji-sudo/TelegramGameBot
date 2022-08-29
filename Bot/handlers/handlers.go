@@ -3,6 +3,7 @@ package handlers
 import (
 	c "dogegambling/config"
 	"fmt"
+	"strings"
 
 	"strconv"
 
@@ -61,10 +62,21 @@ func (h Handler) Init() {
 			user.CreateDepositAddress()
 		}
 
-		ctx.Send(DEPOSIT(user.DepositAddress), b.ModeMarkdown)
+		ctx.Send(DEPOSIT(CopyedString(user.DepositAddress)), b.ModeMarkdown)
 
 		return nil
 	})
+	c.Bot.Handle(&BtnFAQ, func(ctx b.Context) error {
+		UserID := ctx.Chat().ID
+		if !UserExist(UserID) {
+			return ctx.Send("Please /start Again")
+		}
+
+		ctx.Send(FAQ(), b.ModeMarkdown)
+
+		return nil
+	})
+
 	c.Bot.Handle(b.OnText, func(ctx b.Context) error {
 		input := ctx.Text()
 		UserID := ctx.Chat().ID
@@ -83,29 +95,18 @@ func (h Handler) Init() {
 
 					}
 
-				} else if user.Location == "main" {
-
-					if input == BtnGames.Text {
-						user.ChangeLocation("game")
-						return ctx.Send("GameBoard", GameMenu)
-
-					} else if input == BtnReferrals.Text {
-						link := fmt.Sprintf("t.me/%v?start=%v", c.BotUsername, UserID)
-						return ctx.Send(link)
-					} else if input == BtnAccount.Text {
-						userdata := GetUserFromDB(UserID)
-						link := "tg://user?id=" + strconv.FormatInt(UserID, 10)
-						return ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, userdata.Wallet), b.ModeMarkdown)
-					}
-
-				} else if user.Location == "game" {
-					if input == BtnDice.Text {
-						user.ChangeLocation("dice")
-						return ctx.Send("hi", DiceMenu)
-
-					}
 				}
+				if user.Location == "main" {
+					HandelMain(ctx, user)
 
+				} else if user.Location == "games" {
+					HandelGameBoard(ctx, user)
+
+				} else if strings.Contains(user.Location, "dice") {
+					HandelDice(ctx, user)
+
+				}
+				return nil
 			} else {
 				ctx.Send("Don't Spam Bitch")
 			}
@@ -116,4 +117,25 @@ func (h Handler) Init() {
 		return nil
 	})
 
+}
+
+func HandelMain(ctx b.Context, user UserRedis) {
+	input := ctx.Text()
+	UserID := ctx.Chat().ID
+	if input == BtnGames.Text {
+		user.ChangeLocation("games")
+		ctx.Send("GameBoard", GameMenu)
+
+	} else if input == BtnReferrals.Text {
+		link := fmt.Sprintf("t.me/%v?start=%v", c.BotUsername, UserID)
+		ctx.Send(link)
+	} else if input == BtnAccount.Text {
+		userdata := GetUserFromDB(UserID)
+		link := "tg://user?id=" + strconv.FormatInt(UserID, 10)
+		ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, CopyedString(userdata.Wallet)), b.ModeMarkdown)
+	}
+}
+
+func CopyedString(str string) string {
+	return fmt.Sprintf("`%v`", str)
 }

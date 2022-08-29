@@ -15,10 +15,11 @@ type Handler struct {
 }
 
 type UserRedis struct {
-	UserID   int64  `json:"user_id"`
-	IsLock   bool   `json:"lock"`
-	TimeSpam int64  `json:"time_spam"`
-	Location string `json:"loc"`
+	UserID      int64   `json:"user_id"`
+	IsLock      bool    `json:"lock"`
+	TimeSpam    int64   `json:"time_spam"`
+	Location    string  `json:"loc"`
+	AmountofBet float32 `json:"bet_amount"`
 }
 
 type User struct {
