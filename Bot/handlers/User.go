@@ -137,6 +137,7 @@ func (u *User) CreateDepositAddress() {
 	u.DepositAddress = gateway.GenerateAddress()
 	DB.Save(&u)
 }
+
 func UserBalance(userid int64) float32 {
 	user := GetUserFromDB(int64(userid))
 	return user.Balance

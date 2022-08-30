@@ -11,7 +11,7 @@ import (
 func HandelSlot(ctx b.Context, user *UserRedis) {
 	input := ctx.Text()
 	if input == BtnGames.Text {
-		ctx.Send("GameBoard", GameMenu, b.ModeMarkdown)
+		ctx.Send(GameBoard(), GameMenu, b.ModeMarkdown)
 		user.ChangeLocation(Games)
 		return
 	} else if input == BtnHome.Text {
@@ -61,7 +61,7 @@ func HandelSlot(ctx b.Context, user *UserRedis) {
 
 		}
 		user.ChangeLocation(Games)
-		ctx.Send("Game Menu", GameMenu)
+		ctx.Send(GameBoard(), GameMenu)
 
 	}
 }

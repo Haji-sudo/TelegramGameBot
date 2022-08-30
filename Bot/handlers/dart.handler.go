@@ -11,7 +11,7 @@ import (
 func HandelDart(ctx b.Context, user *UserRedis) {
 	input := ctx.Text()
 	if input == BtnGames.Text {
-		ctx.Send("GameBoard", GameMenu, b.ModeMarkdown)
+		ctx.Send(GameBoard(), GameMenu, b.ModeMarkdown)
 		user.ChangeLocation(Games)
 		return
 	} else if input == BtnHome.Text {
@@ -67,7 +67,7 @@ func HandelDart(ctx b.Context, user *UserRedis) {
 			ctx.Send("You Lost")
 		}
 		user.ChangeLocation(Games)
-		ctx.Send("Game Menu", GameMenu)
+		ctx.Send(GameBoard(), GameMenu)
 
 	}
 }

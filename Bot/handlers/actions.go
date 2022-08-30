@@ -40,6 +40,9 @@ func FAQ() string {
 	return `FAQ ❓ 
 	Detailes`
 }
+func GameBoard() string {
+	return "Choose The Game that You Want To Play🕹"
+}
 func BalanceNotEnough(balance float32) string {
 	return fmt.Sprintf("❌ Your balance is not enough \n\n💰 Balance = %v ", balance)
 }
@@ -90,7 +93,7 @@ func BowlText1(userid int64) string {
 	return fmt.Sprintf(`** Bowling 🎳 **
 
 	__Knock Down:__
-	__All Pins__ : ** 2x 😍️ **
+	__Strike__ : ** 2x 😍️ **
 	__5 Pins__ : ** 1.3x 🙂️ **
 	__4 Pins__ : ** 0.9x 😟 **
 	__3 Pins__ : ** 0.6x 😟 **
@@ -121,10 +124,10 @@ func DartText1(userid int64) string {
 	return fmt.Sprintf(`** Darts 🎯 **
 
 	__Tatget__ : ** 2x 😍️ **
-	__Ring 2__ : ** 1.3x 🙂️ **
-	__Ring 3__ : ** 0.9x 😟 **
-	__Ring 4__ : ** 0.6x 😟 **
-	__Ring 5__ : ** 0.3x 😟 **
+	__2nd Ring__ : ** 1.3x 🙂️ **
+	__3nd Ring__ : ** 0.9x 😟 **
+	__4nd Ring__ : ** 0.6x 😟 **
+	__5nd Ring__ : ** 0.3x 😟 **
 	__Out__ : ** 0x  🥺️ **
 	
 	💰 __Balance__: **%vÐ**
