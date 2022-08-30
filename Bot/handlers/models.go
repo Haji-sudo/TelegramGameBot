@@ -13,13 +13,17 @@ type Handler struct {
 	CTX context.Context
 	DB  *gorm.DB
 }
-
+type DiceGame struct {
+	Guess1 int `json:"dice_guess_1"`
+	Guess2 int `json:"dice_guess_2"`
+}
 type UserRedis struct {
 	UserID      int64   `json:"user_id"`
 	IsLock      bool    `json:"lock"`
 	TimeSpam    int64   `json:"time_spam"`
 	Location    string  `json:"loc"`
 	AmountofBet float32 `json:"bet_amount"`
+	Dice        DiceGame
 }
 
 type User struct {

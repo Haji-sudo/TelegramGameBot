@@ -26,7 +26,7 @@ var ( //Color For Console
 
 func main() {
 	LoadConfigAndServeHandlers()
-	fmt.Println(string(colorCyan), "\n\t Bot Started ....", string(colorReset))
+	log.Println(string(colorCyan), "Bot Started ....", string(colorReset))
 	config.Bot.Start()
 
 }
@@ -37,21 +37,21 @@ func LoadConfigAndServeHandlers() {
 		log.Fatal(err)
 	}
 	cfg, err := NewConfig(cfgPath)
-	fmt.Println(string(colorGreen), "\n\t The config has been loaded .")
+	log.Println(string(colorGreen), "The config has been loaded .")
 	// time.Sleep(time.Second * 1)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(string(colorPurple), "\n\t The Handlers Setting up .. ")
+	log.Println(string(colorPurple), "The Handlers Setting up .. ")
 	// time.Sleep(time.Second * 1)
 
 	handler := NewHandler(cfg)
 	handler.Init()
-	fmt.Println(string(colorBlue), "\n\t The Handlers Launched ...")
+	log.Println(string(colorBlue), "The Handlers Launched ...")
 
-	fmt.Println(string(colorYellow), "\n\t The Gateway Setting up .... ")
+	log.Println(string(colorYellow), "The Gateway Setting up .... ")
 	// time.Sleep(time.Second * 1)
 	gateway.Init(cfg.BlockIO.Token, cfg.BlockIO.Pin, cfg.BlockIO.Webhook)
 }

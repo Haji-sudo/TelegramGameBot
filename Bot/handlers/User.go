@@ -90,6 +90,15 @@ func (u *UserRedis) SetBetAmount(amount float32) {
 	u.AmountofBet = amount
 	u.update()
 }
+func (u *UserRedis) SetGuessNumber(guess int, number int) {
+	if guess == 1 {
+		u.Dice.Guess1 = number
+		u.update()
+	} else {
+		u.Dice.Guess2 = number
+		u.update()
+	}
+}
 
 // -----> END User Redis Functions
 
@@ -103,13 +112,13 @@ func CreateInPostgres(userid int64) { //Create User in Postgresql
 func UserExistInDB(userid int64) bool {
 	user := User{}
 	result := DB.Select(&user, userid)
-	return result.RowsAffected > 0
+	return result.RowsAffected < 0
 }
 func GetUserFromDB(userid int64) User {
 	user := User{}
 
 	result := DB.First(&user, userid)
-	if result.RowsAffected <= 0 {
+	if result.RowsAffected < 0 {
 		return user
 	}
 
@@ -131,4 +140,14 @@ func (u *User) CreateDepositAddress() {
 func UserBalance(userid int64) float32 {
 	user := GetUserFromDB(int64(userid))
 	return user.Balance
+}
+func ConfirmBet(userid int64, amount float32) {
+	user := GetUserFromDB(userid)
+	user.Balance -= amount
+	DB.Save(&user)
+}
+func BetWin(userid int64, amount float32) {
+	user := GetUserFromDB(userid)
+	user.Balance += amount
+	DB.Save(&user)
 }
