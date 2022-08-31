@@ -3,7 +3,6 @@ package handlers
 import (
 	c "dogegambling/config"
 	"fmt"
-	"strconv"
 
 	b "gopkg.in/telebot.v3"
 )
@@ -21,10 +20,9 @@ func HandelMain(ctx b.Context, user *UserRedis) {
 		ctx.Send(link)
 		return
 	} else if input == BtnAccount.Text {
-		userdata := GetUserFromDB(UserID)
-		link := "tg://user?id=" + strconv.FormatInt(UserID, 10)
+
 		user.ChangeLocation(Account1)
-		ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, CopyedString(userdata.Wallet)), AccountMenu, b.ModeMarkdown)
+		ctx.Send(ACCOUNT(ctx.Chat().FirstName, UserID), AccountMenu, b.ModeMarkdown)
 		return
 	} else if input == BtnWithdraw.Text {
 		userdata := GetUserFromDB(UserID)
@@ -32,7 +30,7 @@ func HandelMain(ctx b.Context, user *UserRedis) {
 			ctx.Send("Add Your Wallet Address From Account 👤")
 		} else {
 			user.ChangeLocation(Withdraw1)
-			ctx.Send(Balance(userdata.Balance))
+			ctx.Send(Balance(userdata.Balance), b.ModeMarkdown)
 			ctx.Send("Enter amount You want withdraw")
 		}
 		return

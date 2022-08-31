@@ -40,16 +40,17 @@ type User struct {
 	UpdatedAt      int64     `json:"last_update" gorm:"autoUpdateTime:milli"`
 }
 type Payment struct {
-	PID       int32     `json:"pyment_id" gorm:"primaryKey;autoIncrement"`
+	PID       int       `json:"pyment_id" gorm:"primaryKey;autoIncrement"`
 	UserRefer int64     `json:"user_id"`
 	User      User      `gorm:"foreignKey:UserRefer"`
 	TxID      string    `json:"tx_id"`
 	Type      bool      `json:"type"` //True : Deposit | False : Withdraw
 	Amount    float32   `json:"amount gorm:check:amount > 0"`
 	Date      time.Time `json:"time"`
+	Status    string    `json:"status"`
 }
 type Bet struct {
-	BID       int32     `json:"bet_id" gorm:"primaryKey;autoIncrement"`
+	BID       int       `json:"bet_id" gorm:"primaryKey;autoIncrement"`
 	UserRefer int64     `json:"user_id"`
 	User      User      `gorm:"foreignKey:UserRefer"`
 	Type      string    `json:"type"`

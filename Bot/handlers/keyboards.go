@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strconv"
+
 	"gopkg.in/telebot.v3"
 )
 
@@ -19,22 +21,25 @@ var (
 	BtnWithdrawHistory = MainMenu.Text("📉 Withdraw History")
 	BtnGamesHistory    = MainMenu.Text("🧨 Games History")
 
-	BtnHome       = MainMenu.Text("Home 🏠")
-	BtnDice       = GameMenu.Text("Dice 🎲")
-	BtnBowling    = GameMenu.Text("Bowling 🎳")
-	BtnDart       = GameMenu.Text("Dart 🎯")
-	BtnSlot       = GameMenu.Text("Slot 🎰")
-	BtnBalance    = GameMenu.Text("💰 Balance")
-	BtnConfirm    = GameMenu.Text("✅ Confirm")
-	BtnBasketball = GameMenu.Text("Basketball 🏀")
+	BtnHome            = MainMenu.Text("Home 🏠")
+	BtnDice            = GameMenu.Text("Dice 🎲")
+	BtnBowling         = GameMenu.Text("Bowling 🎳")
+	BtnDart            = GameMenu.Text("Dart 🎯")
+	BtnSlot            = GameMenu.Text("Slot 🎰")
+	BtnBalance         = GameMenu.Text("💰 Balance")
+	BtnConfirm         = GameMenu.Text("✅ Confirm")
+	BtnBasketball      = GameMenu.Text("Basketball 🏀")
+	BtnConfirmWithdraw = WithdrawInlineKeyboard.Data("✅ Confirm", "confirm")
+	BtnRejectWithdraw  = WithdrawInlineKeyboard.Data("❌ Reject", "reject")
 )
 var (
-	MainMenu       = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	GameMenu       = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	GameMenu2      = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	ConfirmBetMenu = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	AccountMenu    = &telebot.ReplyMarkup{ResizeKeyboard: true}
-	AccountMenu2   = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	MainMenu               = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	GameMenu               = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	GameMenu2              = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	ConfirmBetMenu         = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	AccountMenu            = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	AccountMenu2           = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	WithdrawInlineKeyboard = &telebot.ReplyMarkup{}
 )
 
 func MenuInint() {
@@ -68,4 +73,15 @@ func MenuInint() {
 	AccountMenu2.Reply(
 		AccountMenu2.Row(BtnHome, BtnAccount),
 	)
+
+}
+func WithdrawButton(id int) *telebot.ReplyMarkup {
+
+	BtnConfirmWithdraw = WithdrawInlineKeyboard.Data("✅ Confirm", "confirm", strconv.Itoa(id))
+	BtnRejectWithdraw = WithdrawInlineKeyboard.Data("❌ Reject", "reject", strconv.Itoa(id))
+	WithdrawInlineKeyboard.Inline(
+		WithdrawInlineKeyboard.Row(BtnRejectWithdraw, BtnConfirmWithdraw),
+	)
+
+	return WithdrawInlineKeyboard
 }

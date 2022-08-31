@@ -3,7 +3,6 @@ package handlers
 import (
 	gateway "dogegambling/Gateway"
 	"fmt"
-	"strconv"
 
 	b "gopkg.in/telebot.v3"
 )
@@ -15,10 +14,8 @@ func HandelAccount(ctx b.Context, user *UserRedis) {
 		user.ChangeLocation(Main)
 		return
 	} else if input == BtnAccount.Text {
-		userdata := GetUserFromDB(ctx.Chat().ID)
-		link := "tg://user?id=" + strconv.FormatInt(ctx.Chat().ID, 10)
 		user.ChangeLocation(Account1)
-		ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, CopyedString(userdata.Wallet)), AccountMenu, b.ModeMarkdown)
+		ctx.Send(ACCOUNT(ctx.Chat().FirstName, ctx.Chat().ID), AccountMenu, b.ModeMarkdown)
 	}
 	if user.Location == Account1 {
 		if input == BtnDepositHistory.Text {

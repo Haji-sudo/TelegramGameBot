@@ -28,10 +28,10 @@ func InitBot(token, username, gift, with_ch, tx_ch, game_ch, admins string) *tel
 	WithdrawChannelID = n2
 
 	n2, _ = strconv.ParseInt(tx_ch, 10, 64)
-	WithdrawChannelID = n2
+	TransactionChannelID = n2
 
 	n2, _ = strconv.ParseInt(game_ch, 10, 64)
-	WithdrawChannelID = n2
+	GamesChannelID = n2
 
 	ad := strings.Split(admins, ",")
 	for _, a := range ad {

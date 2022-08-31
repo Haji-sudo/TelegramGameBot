@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func START(name string, link string) string {
@@ -15,8 +16,12 @@ __Also You Can Invite Your Friends And Earn **DOGE Coin**__
 	
 **For More Information GoTo FAQ ❓ Menu**`, name, link)
 }
+func CreateLinkWithUserID(userid int64) string {
+	return "tg://user?id=" + strconv.FormatInt(userid, 10)
+}
+func ACCOUNT(name string, userid int64) string {
+	user := GetUserFromDB(userid)
 
-func ACCOUNT(name string, link string, balance float32, referrals uint, warning byte, wallet string) string {
 	return fmt.Sprintf(`ℹ️ **INFORMATION**
 
 	👤 __Name__: **[%v](%v)**
@@ -27,15 +32,56 @@ func ACCOUNT(name string, link string, balance float32, referrals uint, warning 
 	
 	⛔ __Warning__: **%v**
 	
-	💳 **Wallet Address**: %v`, name, link, balance, referrals, warning, wallet)
+	💳 **Wallet Address**: %v`, name, CreateLinkWithUserID(userid), user.Balance, user.Referrals, user.Warn, CopyedString(user.Wallet))
 }
+func WithdrawText(name string, userid int64, amount float32) string {
+	user := GetUserFromDB(userid)
 
+	return fmt.Sprintf(`ℹ️ **INFORMATION**
+
+	👤 __Name__: **[%v](%v)**
+	
+	💰 __Balance__: **%vÐ**
+	
+	👥 __Total Referrals__: **%v**
+	
+	⛔ __Warning__: **%v**
+	
+	💳 **Wallet Address**: %v
+	
+	Amount requested : %v`, name, CreateLinkWithUserID(userid), user.Balance, user.Referrals, user.Warn, CopyedString(user.Wallet), amount)
+}
+func ConfirmWithdrawTextChannel(userid int64, amount float32, txid string) string {
+	return fmt.Sprintf(`**✅ Confirmed**
+
+	👤 __Name__: **[User](%v)**
+	
+	Amount requested : %v
+	
+	TXID : https://blockchair.com/dogecoin/transaction/%v`, CreateLinkWithUserID(userid), amount, txid)
+}
+func ResponseConfirmWithdraw(txid string) string {
+	return fmt.Sprintf(`Your withdrawal has been confirmed and sent
+	
+	TXID : https://blockchair.com/dogecoin/transaction/%v`, txid)
+}
 func DEPOSIT(deposit string) string {
 	return fmt.Sprintf(`ℹ️ **Deposit**
 	
 	💳 **Wallet Address**: %v`, deposit)
 }
+func WithdrawConfirm(amount float32, userid int64) string {
+	userdata := GetUserFromDB(userid)
+	return fmt.Sprintf(`** Withdraw 📤 **
 
+	💸 __Amount__ : **%vÐ**
+	
+	💳 __Wallet Address__ : %v
+	
+	__ If You Want **Withdraw?**__
+	
+	✅Confirm Withdraw `, amount, userdata.Wallet)
+}
 func FAQ() string {
 	return `FAQ ❓ 
 	Detailes`

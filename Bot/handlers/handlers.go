@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	gateway "dogegambling/Gateway"
 	c "dogegambling/config"
+	"encoding/json"
 	"strings"
 
 	"strconv"
@@ -82,7 +84,32 @@ func (h Handler) Init() {
 		ctx.Send("Sent")
 		return nil
 	})
-
+	Admin.Handle(&BtnConfirmWithdraw, func(ctx b.Context) error {
+		ctx.Edit("Processing ...")
+		pid, _ := strconv.Atoi(ctx.Data())
+		w := GetPaymentByID(pid)
+		if w.Status != "Pending" {
+			ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, w.TxID), b.ModeMarkdown)
+			return nil
+		}
+		res, err := gateway.Withdraw(float64(w.Amount), GetWalletAddress(w.UserRefer))
+		if err != nil {
+			return nil
+		} else if res.Status != "success" {
+			text, _ := json.Marshal(res)
+			ctx.Send(string(text))
+			return nil
+		}
+		ConfirmWithdraw(pid, res.Data.Txid)
+		ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, res.Data.Txid), b.ModeMarkdown)
+		ch := b.ChatID(w.UserRefer)
+		h.Bot.Send(ch, ResponseConfirmWithdraw(res.Data.Txid))
+		ctx.Respond()
+		return nil
+	})
+	Admin.Handle(&BtnRejectWithdraw, func(ctx b.Context) error {
+		return nil
+	})
 	h.Bot.Handle(b.OnText, func(ctx b.Context) error {
 		input := ctx.Text()
 		UserID := ctx.Chat().ID
@@ -99,7 +126,6 @@ func (h Handler) Init() {
 						return ctx.Send("Home", MainMenu)
 
 					}
-
 				}
 				if user.Location == Main {
 					HandelMain(ctx, &user)
@@ -131,6 +157,9 @@ func (h Handler) Init() {
 
 				} else if strings.Contains(user.Location, "acc") {
 					HandelAccount(ctx, &user)
+					return nil
+				} else if strings.Contains(user.Location, "withdraw") {
+					HandelWithdraw(ctx, &user, h.Bot)
 					return nil
 				}
 				return nil
