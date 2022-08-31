@@ -1,3 +1,12 @@
+bot:
+  token: "951774571:AAEwmnWr3jXpNRULeBC-oOjIGjosIdgVqK0"
+  username: "GetInfocryptoBot"
+  gift: 0.5
+  withdrawchannelID: "-1001515151515"
+  transactionchannelID: "-1001515151515"
+  gameschannelId: "-1001515151511"
+  admins: 78246181,734741043
+
 redisdb:
   user: "default"
   pass: "redispw"

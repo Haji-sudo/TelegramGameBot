@@ -30,6 +30,10 @@ func HandelMain(ctx b.Context, user *UserRedis) {
 		userdata := GetUserFromDB(UserID)
 		if userdata.Wallet == "" {
 			ctx.Send("Add Your Wallet Address From Account 👤")
+		} else {
+			user.ChangeLocation(Withdraw1)
+			ctx.Send(Balance(userdata.Balance))
+			ctx.Send("Enter amount You want withdraw")
 		}
 		return
 	}

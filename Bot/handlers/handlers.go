@@ -13,9 +13,9 @@ import (
 func (h Handler) Init() {
 	h.UserInit()
 	MenuInint()
-	Admin := c.Bot.Group()
+	Admin := h.Bot.Group()
 	Admin.Use(middleware.Whitelist(c.Admins...))
-	c.Bot.Handle("/start", func(ctx b.Context) error {
+	h.Bot.Handle("/start", func(ctx b.Context) error {
 		UserID := ctx.Chat().ID
 		if !UserExist(UserID) {
 			if !UserExistInDB(UserID) {
@@ -28,7 +28,7 @@ func (h Handler) Init() {
 								userdb := GetUserFromDB(inviterID)
 								userdb.AddReferral()
 								inviter := b.ChatID(inviterID)
-								c.Bot.Send(inviter, "you got a new referral")
+								h.Bot.Send(inviter, "you got a new referral")
 							}
 						}
 					}
@@ -51,7 +51,7 @@ func (h Handler) Init() {
 
 		return nil
 	})
-	c.Bot.Handle(&BtnDeposit, func(ctx b.Context) error {
+	h.Bot.Handle(&BtnDeposit, func(ctx b.Context) error {
 		UserID := ctx.Chat().ID
 		if !UserExist(UserID) {
 			return ctx.Send("Please /start Again")
@@ -65,7 +65,7 @@ func (h Handler) Init() {
 
 		return nil
 	})
-	c.Bot.Handle(&BtnFAQ, func(ctx b.Context) error {
+	h.Bot.Handle(&BtnFAQ, func(ctx b.Context) error {
 		UserID := ctx.Chat().ID
 		if !UserExist(UserID) {
 			return ctx.Send("Please /start Again")
@@ -83,7 +83,7 @@ func (h Handler) Init() {
 		return nil
 	})
 
-	c.Bot.Handle(b.OnText, func(ctx b.Context) error {
+	h.Bot.Handle(b.OnText, func(ctx b.Context) error {
 		input := ctx.Text()
 		UserID := ctx.Chat().ID
 		if UserExist(UserID) {

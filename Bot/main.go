@@ -12,48 +12,29 @@ import (
 	"log"
 	"os"
 
+	"gopkg.in/telebot.v3"
 	"gopkg.in/yaml.v3"
 )
 
-var ( //Color For Console
-	colorGreen  = "\033[32m"
-	colorCyan   = "\033[36m"
-	colorReset  = "\033[0m"
-	colorPurple = "\033[35m"
-	colorYellow = "\033[33m"
-	colorBlue   = "\033[34m"
-)
-
 func main() {
-	LoadConfigAndServeHandlers()
-	log.Println(string(colorCyan), "Bot Started ....", string(colorReset))
-	config.Bot.Start()
-
+	Bot := LoadConfigAndServeHandlers()
+	log.Println("Bot Started ....")
+	Bot.Start()
 }
-
-func LoadConfigAndServeHandlers() {
+func LoadConfigAndServeHandlers() *telebot.Bot {
 	cfgPath, err := ParseFlags()
 	if err != nil {
 		log.Fatal(err)
 	}
 	cfg, err := NewConfig(cfgPath)
-	log.Println(string(colorGreen), "The config has been loaded .")
-	// time.Sleep(time.Second * 1)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println(string(colorPurple), "The Handlers Setting up .. ")
-	// time.Sleep(time.Second * 1)
-
 	handler := NewHandler(cfg)
 	handler.Init()
-	log.Println(string(colorBlue), "The Handlers Launched ...")
-
-	log.Println(string(colorYellow), "The Gateway Setting up .... ")
-	// time.Sleep(time.Second * 1)
 	gateway.Init(cfg.BlockIO.Token, cfg.BlockIO.Pin, cfg.BlockIO.Webhook)
+	return handler.Bot
 }
 
 func NewHandler(c handlers.Config) handlers.Handler {
@@ -61,6 +42,7 @@ func NewHandler(c handlers.Config) handlers.Handler {
 		RDB: r.InitRedisdb(c.Redis.User, c.Redis.Pass, c.Redis.Server, c.Redis.Port, c.Redis.DB),
 		CTX: context.Background(),
 		DB:  p.InitPostgredb(c.Postgresql.User, c.Postgresql.Pass, c.Postgresql.Server, c.Postgresql.Port, c.Postgresql.DB),
+		Bot: config.InitBot(c.Bot.Token, c.Bot.Username, c.Bot.Gift, c.Bot.WithdrawChannelID, c.Bot.TransactionChannelID, c.Bot.GamesChannelID, c.Bot.Admins),
 	}
 	return db
 

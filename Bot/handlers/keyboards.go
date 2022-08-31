@@ -14,7 +14,7 @@ var (
 	BtnReferrals       = MainMenu.Text("Referrals 👥")
 	BtnFAQ             = MainMenu.Text("FAQ ❓")
 	BtnAccount         = MainMenu.Text("Account 👤")
-	BtnChangeAddress   = MainMenu.Text("🔁 Change Wallet Address")
+	BtnChangeAddress   = MainMenu.Text("🔁 Update Wallet Address")
 	BtnDepositHistory  = MainMenu.Text("📈 Deposit History")
 	BtnWithdrawHistory = MainMenu.Text("📉 Withdraw History")
 	BtnGamesHistory    = MainMenu.Text("🧨 Games History")

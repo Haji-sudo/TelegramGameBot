@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
+	"gopkg.in/telebot.v3"
 	"gorm.io/gorm"
 )
 
@@ -12,6 +13,7 @@ type Handler struct {
 	RDB *redis.Client
 	CTX context.Context
 	DB  *gorm.DB
+	Bot *telebot.Bot
 }
 type DiceGame struct {
 	Guess1 int `json:"dice_guess_1"`
@@ -57,6 +59,15 @@ type Bet struct {
 }
 
 type Config struct {
+	Bot struct {
+		Token                string `yaml:"token"`
+		Username             string `yaml:"username"`
+		Gift                 string `yaml:"gift"`
+		WithdrawChannelID    string `yaml:"withdrawchannelID"`
+		TransactionChannelID string `yaml:"transactionchannelID"`
+		GamesChannelID       string `yaml:"gameschannelId"`
+		Admins               string `yaml:"admins"`
+	}
 	Redis struct {
 		User   string `yaml:"user"`
 		Pass   string `yaml:"pass"`

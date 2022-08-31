@@ -5,6 +5,7 @@ import "math/rand"
 const (
 	Main      = "main"
 	Withdraw1 = "withdraw1"
+	Withdraw2 = "withdraw2"
 	Account1  = "acc1"
 	Account2  = "acc2"
 	Games     = "games"
