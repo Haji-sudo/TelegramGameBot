@@ -38,13 +38,22 @@ type User struct {
 	UpdatedAt      int64     `json:"last_update" gorm:"autoUpdateTime:milli"`
 }
 type Payment struct {
-	PID       int32   `json:"pyment_id" gorm:"primaryKey"`
-	UserRefer int64   `json:"user_id"`
-	User      User    `gorm:"foreignKey:UserRefer"`
-	TxID      string  `json:"tx_id"`
-	Type      bool    `json:"type"` //True : Deposit | False : Withdraw
-	Amount    float32 `json:"amount gorm:check:amount > 0"`
-	Date      int64   `json:"time"`
+	PID       int32     `json:"pyment_id" gorm:"primaryKey;autoIncrement"`
+	UserRefer int64     `json:"user_id"`
+	User      User      `gorm:"foreignKey:UserRefer"`
+	TxID      string    `json:"tx_id"`
+	Type      bool      `json:"type"` //True : Deposit | False : Withdraw
+	Amount    float32   `json:"amount gorm:check:amount > 0"`
+	Date      time.Time `json:"time"`
+}
+type Bet struct {
+	BID       int32     `json:"bet_id" gorm:"primaryKey;autoIncrement"`
+	UserRefer int64     `json:"user_id"`
+	User      User      `gorm:"foreignKey:UserRefer"`
+	Type      string    `json:"type"`
+	Amount    float32   `json:"amount"`
+	Date      time.Time `json:"time"`
+	Result    string    `json:"result"`
 }
 
 type Config struct {

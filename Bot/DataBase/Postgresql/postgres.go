@@ -15,6 +15,6 @@ func InitPostgredb(user, pass, server, port, dbname string) *gorm.DB {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	db.AutoMigrate(&handlers.User{}, &handlers.Payment{})
+	db.AutoMigrate(&handlers.User{}, &handlers.Payment{}, &handlers.Bet{})
 	return db
 }

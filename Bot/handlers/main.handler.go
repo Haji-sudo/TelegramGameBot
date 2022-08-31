@@ -23,7 +23,14 @@ func HandelMain(ctx b.Context, user *UserRedis) {
 	} else if input == BtnAccount.Text {
 		userdata := GetUserFromDB(UserID)
 		link := "tg://user?id=" + strconv.FormatInt(UserID, 10)
-		ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, CopyedString(userdata.Wallet)), b.ModeMarkdown)
+		user.ChangeLocation(Account1)
+		ctx.Send(ACCOUNT(ctx.Chat().FirstName, link, userdata.Balance, userdata.Referrals, userdata.Warn, CopyedString(userdata.Wallet)), AccountMenu, b.ModeMarkdown)
+		return
+	} else if input == BtnWithdraw.Text {
+		userdata := GetUserFromDB(UserID)
+		if userdata.Wallet == "" {
+			ctx.Send("Add Your Wallet Address From Account 👤")
+		}
 		return
 	}
 }

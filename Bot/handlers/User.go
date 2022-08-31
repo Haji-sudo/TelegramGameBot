@@ -66,7 +66,7 @@ func (u *UserRedis) UpdateTime() { //Update Spam Time in Redis
 }
 
 func (u *UserRedis) NotSpam() bool {
-	return time.Now().UnixMilli()-u.TimeSpam > 800 //if spam return True
+	return time.Now().UnixMilli()-u.TimeSpam > 500 //if spam return True
 }
 
 func (u *UserRedis) update() { //Update User in Redis
@@ -151,4 +151,20 @@ func BetWin(userid int64, amount float32) {
 	user := GetUserFromDB(userid)
 	user.Balance += amount
 	DB.Save(&user)
+}
+
+func GetDepositHistory(userid int64) []Payment {
+	payments := []Payment{}
+	DB.Model(&Payment{}).Order("date DESC").Where("user_refer = ?", userid).Where("type = ?", true).Limit(10).Find(&payments)
+	return payments
+}
+func GetWithdrawHistory(userid int64) []Payment {
+	payments := []Payment{}
+	DB.Model(&Payment{}).Order("date DESC").Where("user_refer = ?", userid).Where("type = ?", false).Limit(10).Find(&payments)
+	return payments
+}
+func GetGamesHistory(userid int64) []Bet {
+	bets := []Bet{}
+	DB.Model(&Bet{}).Order("date DESC").Where("user_refer = ?", userid).Limit(10).Find(&bets)
+	return bets
 }

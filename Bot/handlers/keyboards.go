@@ -8,12 +8,17 @@ import (
 var ()
 
 var (
-	BtnGames      = MainMenu.Text("Games 🎮")
-	BtnDeposit    = MainMenu.Text("Deposit 📥")
-	BtnWithdraw   = MainMenu.Text("Withdraw 📤")
-	BtnReferrals  = MainMenu.Text("Referrals 👥")
-	BtnFAQ        = MainMenu.Text("FAQ ❓")
-	BtnAccount    = MainMenu.Text("Account 👤")
+	BtnGames           = MainMenu.Text("Games 🎮")
+	BtnDeposit         = MainMenu.Text("Deposit 📥")
+	BtnWithdraw        = MainMenu.Text("Withdraw 📤")
+	BtnReferrals       = MainMenu.Text("Referrals 👥")
+	BtnFAQ             = MainMenu.Text("FAQ ❓")
+	BtnAccount         = MainMenu.Text("Account 👤")
+	BtnChangeAddress   = MainMenu.Text("🔁 Change Wallet Address")
+	BtnDepositHistory  = MainMenu.Text("📈 Deposit History")
+	BtnWithdrawHistory = MainMenu.Text("📉 Withdraw History")
+	BtnGamesHistory    = MainMenu.Text("🧨 Games History")
+
 	BtnHome       = MainMenu.Text("Home 🏠")
 	BtnDice       = GameMenu.Text("Dice 🎲")
 	BtnBowling    = GameMenu.Text("Bowling 🎳")
@@ -28,6 +33,8 @@ var (
 	GameMenu       = &telebot.ReplyMarkup{ResizeKeyboard: true}
 	GameMenu2      = &telebot.ReplyMarkup{ResizeKeyboard: true}
 	ConfirmBetMenu = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	AccountMenu    = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	AccountMenu2   = &telebot.ReplyMarkup{ResizeKeyboard: true}
 )
 
 func MenuInint() {
@@ -38,7 +45,12 @@ func MenuInint() {
 		MainMenu.Row(BtnReferrals, BtnFAQ),
 		MainMenu.Row(BtnAccount),
 	)
-
+	AccountMenu.Reply(
+		AccountMenu.Row(BtnChangeAddress),
+		AccountMenu.Row(BtnDepositHistory, BtnWithdrawHistory),
+		AccountMenu.Row(BtnGamesHistory),
+		AccountMenu.Row(BtnHome),
+	)
 	GameMenu.Reply(
 		GameMenu.Row(BtnDice, BtnBowling, BtnBasketball),
 		GameMenu.Row(BtnDart, BtnSlot),
@@ -53,5 +65,7 @@ func MenuInint() {
 		ConfirmBetMenu.Row(BtnConfirm),
 		ConfirmBetMenu.Row(BtnHome, BtnGames),
 	)
-
+	AccountMenu2.Reply(
+		AccountMenu2.Row(BtnHome, BtnAccount),
+	)
 }

@@ -129,6 +129,9 @@ func (h Handler) Init() {
 					HandelBasket(ctx, &user)
 					return nil
 
+				} else if strings.Contains(user.Location, "acc") {
+					HandelAccount(ctx, &user)
+					return nil
 				}
 				return nil
 			} else {

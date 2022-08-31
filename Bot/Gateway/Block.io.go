@@ -37,6 +37,14 @@ type WithdrawSchema struct {
 		Txid    string `json:"txid"`
 	} `json:"data"`
 }
+type ValidateAddressSchema struct {
+	Status string `json:"status"`
+	Data   struct {
+		Network string `json:"network"`
+		Address string `json:"address"`
+		IsValid bool   `json:"is_valid"`
+	} `json:"data"`
+}
 
 var (
 	token string
@@ -117,4 +125,23 @@ func Withdraw(amount float64, to_address string) (WithdrawSchema, error) {
 	data := WithdrawSchema{}
 	json.Unmarshal([]byte(result), &data)
 	return data, nil
+}
+func ValidateAddress(address string) bool {
+	url := fmt.Sprintf("https://block.io/api/v2/is_valid_address/?api_key=%v&address=%v", token, address)
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Printf("Error in ValidateAddress http Request : %v", err)
+	}
+	defer resp.Body.Close()
+	jsonDataFromHttp, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Error in Read Body ValidateAddress : %v", err)
+	}
+	result := ValidateAddressSchema{}
+	err = json.Unmarshal([]byte(jsonDataFromHttp), &result)
+	if err != nil {
+		log.Printf("Error in Parse response to ValidateAddress object : %v", err)
+	}
+
+	return result.Data.IsValid
 }
