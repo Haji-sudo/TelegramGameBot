@@ -52,18 +52,34 @@ func WithdrawText(name string, userid int64, amount float32) string {
 	Amount requested : %v`, name, CreateLinkWithUserID(userid), user.Balance, user.Referrals, user.Warn, CopyedString(user.Wallet), amount)
 }
 func ConfirmWithdrawTextChannel(userid int64, amount float32, txid string) string {
-	return fmt.Sprintf(`**✅ Confirmed**
+	return fmt.Sprintf(`**    ✅ Confirmed**
 
-	👤 __Name__: **[User](%v)**
+	👤**[User](%v)**
 	
 	Amount requested : %v
 	
 	TXID : https://blockchair.com/dogecoin/transaction/%v`, CreateLinkWithUserID(userid), amount, txid)
 }
+func RejectWithdrawTextChannel(userid int64, amount float32, pid int) string {
+	return fmt.Sprintf(`**    ❌ Rejected**
+
+	👤**[User](%v)**
+	
+	Amount requested : %v
+	
+	Request ID : %v`, CreateLinkWithUserID(userid), amount, pid)
+}
 func ResponseConfirmWithdraw(txid string) string {
 	return fmt.Sprintf(`Your withdrawal has been confirmed and sent
 	
 	TXID : https://blockchair.com/dogecoin/transaction/%v`, txid)
+}
+func ResponseRejectWithdraw(pid int) string {
+	return fmt.Sprintf(`Your withdrawal request was rejected
+
+	If you think there is a problem, contact support
+	
+	Request ID : %v`, pid)
 }
 func DEPOSIT(deposit string) string {
 	return fmt.Sprintf(`ℹ️ **Deposit**

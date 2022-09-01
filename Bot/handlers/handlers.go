@@ -77,39 +77,6 @@ func (h Handler) Init() {
 
 		return nil
 	})
-	Admin.Handle("/add", func(ctx b.Context) error {
-		userid, _ := strconv.Atoi(ctx.Args()[0])
-		amount, _ := strconv.ParseFloat(ctx.Args()[1], 32)
-		BetWin(int64(userid), float32(amount))
-		ctx.Send("Sent")
-		return nil
-	})
-	Admin.Handle(&BtnConfirmWithdraw, func(ctx b.Context) error {
-		ctx.Edit("Processing ...")
-		pid, _ := strconv.Atoi(ctx.Data())
-		w := GetPaymentByID(pid)
-		if w.Status != "Pending" {
-			ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, w.TxID), b.ModeMarkdown)
-			return nil
-		}
-		res, err := gateway.Withdraw(float64(w.Amount), GetWalletAddress(w.UserRefer))
-		if err != nil {
-			return nil
-		} else if res.Status != "success" {
-			text, _ := json.Marshal(res)
-			ctx.Send(string(text))
-			return nil
-		}
-		ConfirmWithdraw(pid, res.Data.Txid)
-		ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, res.Data.Txid), b.ModeMarkdown)
-		ch := b.ChatID(w.UserRefer)
-		h.Bot.Send(ch, ResponseConfirmWithdraw(res.Data.Txid))
-		ctx.Respond()
-		return nil
-	})
-	Admin.Handle(&BtnRejectWithdraw, func(ctx b.Context) error {
-		return nil
-	})
 	h.Bot.Handle(b.OnText, func(ctx b.Context) error {
 		input := ctx.Text()
 		UserID := ctx.Chat().ID
@@ -173,4 +140,64 @@ func (h Handler) Init() {
 		return nil
 	})
 
+	Admin.Handle("/add", func(ctx b.Context) error {
+		userid, _ := strconv.Atoi(ctx.Args()[0])
+		amount, _ := strconv.ParseFloat(ctx.Args()[1], 32)
+		BetWin(int64(userid), float32(amount))
+		ctx.Send("Sent")
+		return nil
+	})
+	Admin.Handle(&BtnConfirmWithdraw, func(ctx b.Context) error {
+		user := GetUser(ctx.Sender().ID)
+		if !user.IsLock && user.NotSpam() {
+			user.UpdateTime()
+			user.lock()
+			defer user.unlock()
+
+			ctx.Edit("🔁**Processing** **...**", b.ModeMarkdown)
+			pid, _ := strconv.Atoi(ctx.Data())
+			ctx.Edit("🔁**Processing** **...**\n Receiving Information ...", b.ModeMarkdown)
+			w := GetPaymentByID(pid)
+			if w.Status != "Pending" {
+				ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, w.TxID), b.ModeMarkdown)
+				return nil
+			}
+			ctx.Edit("🔁**Processing** **...**\n Submit a withdrawal request ...", b.ModeMarkdown)
+			res, err := gateway.Withdraw(float64(w.Amount), GetWalletAddress(w.UserRefer))
+			if err != nil {
+				return nil
+			} else if res.Status != "success" {
+				text, _ := json.Marshal(res)
+				ctx.Send(string(text))
+				return nil
+			}
+			ctx.Edit("🔁**Processing** **...**\n Record the result ...", b.ModeMarkdown)
+			ConfirmWithdraw(pid, res.Data.Txid)
+			ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, res.Data.Txid), b.ModeMarkdown)
+			SendToUser(h.Bot, w.UserRefer, ResponseConfirmWithdraw(res.Data.Txid))
+		}
+
+		return nil
+	})
+	Admin.Handle(&BtnRejectWithdraw, func(ctx b.Context) error {
+		user := GetUser(ctx.Sender().ID)
+		if !user.IsLock && user.NotSpam() {
+			user.UpdateTime()
+			user.lock()
+			defer user.unlock()
+
+			ctx.Edit("🔁**Processing** **...**", b.ModeMarkdown)
+			pid, _ := strconv.Atoi(ctx.Data())
+			ctx.Edit("🔁**Processing** **...**\n Receiving Information ...", b.ModeMarkdown)
+			w := GetPaymentByID(pid)
+			if w.Status != "Pending" {
+				ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, w.TxID), b.ModeMarkdown)
+				return nil
+			}
+			RejectWithdraw(pid)
+			SendToUser(h.Bot, w.UserRefer, ResponseRejectWithdraw(pid))
+			ctx.Edit(RejectWithdrawTextChannel(w.UserRefer, w.Amount, pid), b.ModeMarkdown)
+		}
+		return nil
+	})
 }

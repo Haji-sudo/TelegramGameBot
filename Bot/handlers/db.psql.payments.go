@@ -34,3 +34,8 @@ func ConfirmWithdraw(pid int, txid string) {
 	payment.Status = "Done"
 	DB.Save(&payment)
 }
+func RejectWithdraw(pid int) {
+	payment := GetPaymentByID(pid)
+	payment.Status = "Reject"
+	DB.Save(&payment)
+}
