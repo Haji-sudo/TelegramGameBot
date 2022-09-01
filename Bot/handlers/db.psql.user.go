@@ -61,3 +61,13 @@ func GetWalletAddress(userid int64) string {
 	user := GetUserFromDB(userid)
 	return user.Wallet
 }
+func GetUserByDepositAddress(address string) int64 {
+	user := User{}
+	DB.Model(&User{}).Where("deposit_address = ?", address).Find(&user)
+	return user.UserID
+}
+func ConfirmDepositInUser(userid int64, amount float32) {
+	user := GetUserFromDB(userid)
+	user.Balance += amount
+	DB.Save(&user)
+}

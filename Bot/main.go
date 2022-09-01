@@ -7,6 +7,7 @@ import (
 	gateway "dogegambling/Gateway"
 	"dogegambling/config"
 	"dogegambling/handlers"
+	"dogegambling/webhook"
 	"flag"
 	"fmt"
 	"log"
@@ -17,7 +18,9 @@ import (
 )
 
 func main() {
+
 	Bot := LoadConfigAndServeHandlers()
+	go webhook.Serve(Bot)
 	log.Println("Bot Started ....")
 	Bot.Start()
 }
@@ -33,7 +36,7 @@ func LoadConfigAndServeHandlers() *telebot.Bot {
 
 	handler := NewHandler(cfg)
 	handler.Init()
-	gateway.Init(cfg.BlockIO.Token, cfg.BlockIO.Pin, cfg.BlockIO.Webhook)
+	gateway.Init(cfg.BlockIO.Token, cfg.BlockIO.Pin)
 	return handler.Bot
 }
 

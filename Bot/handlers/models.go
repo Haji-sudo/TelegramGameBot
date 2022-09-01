@@ -84,8 +84,7 @@ type Config struct {
 		DB     string `yaml:"db"`
 	} `yaml:"posgresql"`
 	BlockIO struct {
-		Token   string `yaml:"token"`
-		Pin     string `yaml:"pin"`
-		Webhook string `yaml:"webhookurl"`
+		Token string `yaml:"token"`
+		Pin   string `yaml:"pin"`
 	} `yaml:"blockio"`
 }

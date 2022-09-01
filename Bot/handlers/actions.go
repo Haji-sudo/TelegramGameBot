@@ -81,6 +81,20 @@ func ResponseRejectWithdraw(pid int) string {
 	
 	Request ID : %v`, pid)
 }
+func ResponseSubmitDepoist(amount float64, txid string) string {
+	return fmt.Sprintf(`You received a deposit
+	It will be added to your balance after 10 confirmations
+
+	Amount : %v
+	
+	TXID: %v`, amount, txid)
+}
+func ResponseConfirmDepoist(amount float64, txid string) string {
+	return fmt.Sprintf(`Your deposit has been confirmed
+	Amount : %v
+	
+	TXID: %v`, amount, txid)
+}
 func DEPOSIT(deposit string) string {
 	return fmt.Sprintf(`ℹ️ **Deposit**
 	

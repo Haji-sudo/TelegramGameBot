@@ -25,7 +25,7 @@ func HandelWithdraw(ctx b.Context, user *UserRedis, Bot *b.Bot) {
 		}
 		user.SetWithdrawAmount(float32(amount))
 		user.ChangeLocation(Withdraw2)
-		ctx.Send(WithdrawConfirm(float32(amount), ctx.Chat().ID), ConfirmBetMenu, b.ModeMarkdown)
+		ctx.Send(WithdrawConfirm(float32(amount), ctx.Chat().ID), WithdrawConfirmMenu, b.ModeMarkdown)
 		return
 	} else if user.Location == Withdraw2 {
 		if input != BtnConfirm.Text {

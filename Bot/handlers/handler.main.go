@@ -27,11 +27,11 @@ func HandelMain(ctx b.Context, user *UserRedis) {
 	} else if input == BtnWithdraw.Text {
 		userdata := GetUserFromDB(UserID)
 		if userdata.Wallet == "" {
-			ctx.Send("Add Your Wallet Address From Account 👤")
+			ctx.Send("Add Your Wallet Address From Account 👤", b.ModeMarkdown)
 		} else {
 			user.ChangeLocation(Withdraw1)
 			ctx.Send(Balance(userdata.Balance), b.ModeMarkdown)
-			ctx.Send("Enter amount You want withdraw")
+			ctx.Send("Enter amount You want withdraw", WithdrawMenu, b.ModeMarkdown)
 		}
 		return
 	}

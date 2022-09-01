@@ -52,7 +52,7 @@ var (
 	//webHookURL string
 )
 
-func Init(Token string, Pin string, webhook string) {
+func Init(Token string, Pin string) {
 	token = Token
 	//webHookURL = webhook
 	pin = Pin

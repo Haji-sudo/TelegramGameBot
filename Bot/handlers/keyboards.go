@@ -39,6 +39,8 @@ var (
 	ConfirmBetMenu         = &telebot.ReplyMarkup{ResizeKeyboard: true}
 	AccountMenu            = &telebot.ReplyMarkup{ResizeKeyboard: true}
 	AccountMenu2           = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	WithdrawMenu           = &telebot.ReplyMarkup{ResizeKeyboard: true}
+	WithdrawConfirmMenu    = &telebot.ReplyMarkup{ResizeKeyboard: true}
 	WithdrawInlineKeyboard = &telebot.ReplyMarkup{}
 )
 
@@ -69,6 +71,13 @@ func MenuInint() {
 	ConfirmBetMenu.Reply(
 		ConfirmBetMenu.Row(BtnConfirm),
 		ConfirmBetMenu.Row(BtnHome, BtnGames),
+	)
+	WithdrawConfirmMenu.Reply(
+		WithdrawConfirmMenu.Row(BtnConfirm),
+		WithdrawConfirmMenu.Row(BtnHome),
+	)
+	WithdrawMenu.Reply(
+		WithdrawMenu.Row(BtnHome),
 	)
 	AccountMenu2.Reply(
 		AccountMenu2.Row(BtnHome, BtnAccount),

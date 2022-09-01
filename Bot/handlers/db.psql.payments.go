@@ -28,6 +28,11 @@ func GetPaymentByID(pid int) Payment {
 	DB.Model(&Payment{}).Where("p_id = ?", pid).Find(&payment)
 	return payment
 }
+func GetPaymentByTXID(txid string) Payment {
+	payment := Payment{}
+	DB.Model(&Payment{}).Where("tx_id = ?", txid).Find(&payment)
+	return payment
+}
 func ConfirmWithdraw(pid int, txid string) {
 	payment := GetPaymentByID(pid)
 	payment.TxID = txid
@@ -38,4 +43,19 @@ func RejectWithdraw(pid int) {
 	payment := GetPaymentByID(pid)
 	payment.Status = "Reject"
 	DB.Save(&payment)
+}
+func SubmitDeposit(address string, amount float32, txid string) int64 {
+	userid := GetUserByDepositAddress(address)
+	payment := Payment{UserRefer: userid, Date: time.Now(), Amount: amount, Type: true, TxID: txid, Status: "Pending"}
+	if result := DB.Create(&payment); result.Error != nil {
+		log.Println(result.Error)
+	}
+	return userid
+}
+func ConfirmDeposit(txid string) int64 {
+	payment := GetPaymentByTXID(txid)
+	ConfirmDepositInUser(payment.UserRefer, payment.Amount)
+	payment.Status = "Done"
+	DB.Save(&payment)
+	return payment.UserRefer
 }
