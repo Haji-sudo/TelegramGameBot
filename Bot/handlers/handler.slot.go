@@ -51,13 +51,16 @@ func HandelSlot(ctx b.Context, user *UserRedis) {
 		switch slot.Dice.Value {
 		case 1, 22, 43, 64: //Win
 			BetWin(ctx.Chat().ID, user.AmountofBet*2)
-			ctx.Send(WonText(2))
+			ctx.Send(WinText(2))
+			SaveGameHistroy(ctx.Chat().ID, Slot, user.AmountofBet, "Win 2x")
 		case 7, 8, 10, 12, 14, 15, 19, 20, 25, 28, 29, 31, 34, 36, 37, 40, 45, 46, 50, 51, 55, 53, 57, 58: //Lose
 			ctx.Send("You Lost")
+			SaveGameHistroy(ctx.Chat().ID, Slot, user.AmountofBet, "Lose 0x")
 		default:
 			winrnd := GetRandomWinNumber()
 			BetWin(ctx.Chat().ID, user.AmountofBet*winrnd)
-			ctx.Send(WonText(winrnd))
+			ctx.Send(WinText(winrnd))
+			SaveGameHistroy(ctx.Chat().ID, Slot, user.AmountofBet, WinText(winrnd))
 
 		}
 		user.ChangeLocation(Games)

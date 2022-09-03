@@ -24,9 +24,9 @@ func HandelAccount(ctx b.Context, user *UserRedis) {
 			for _, d := range deposits {
 				res += fmt.Sprintf(`
 				Amount : %v
-				TXID : %v
+				TXID : https://chain.so/tx/DOGETEST/%v
 				Date : %v
-				〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️`, d.Amount, CopyedString(d.TxID), d.Date.Format("2006-01-02 15:04"))
+				〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️`, d.Amount, d.TxID, d.Date.Format("2006-01-02 15:04"))
 			}
 			ctx.Send(res)
 			return
@@ -36,9 +36,9 @@ func HandelAccount(ctx b.Context, user *UserRedis) {
 			for _, d := range withdraws {
 				res += fmt.Sprintf(`
 				Amount : %v
-				TXID : %v
+				TXID : https://chain.so/tx/DOGETEST/%v
 				Date : %v
-				〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️`, d.Amount, CopyedString(d.TxID), d.Date.Format("2006-01-02 15:04"))
+				〰️〰️〰️〰️〰️〰️〰️〰️〰️〰️`, d.Amount, d.TxID, d.Date.Format("2006-01-02 15:04"))
 			}
 			ctx.Send(res)
 			return

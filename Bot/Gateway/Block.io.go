@@ -49,12 +49,10 @@ type ValidateAddressSchema struct {
 var (
 	token string
 	pin   string
-	//webHookURL string
 )
 
 func Init(Token string, Pin string) {
 	token = Token
-	//webHookURL = webhook
 	pin = Pin
 }
 

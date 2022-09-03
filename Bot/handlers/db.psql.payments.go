@@ -30,7 +30,7 @@ func GetPaymentByID(pid int) Payment {
 }
 func GetPaymentByTXID(txid string) Payment {
 	payment := Payment{}
-	DB.Model(&Payment{}).Where("tx_id = ?", txid).Find(&payment)
+	DB.Model(&Payment{}).Where("type = ?", true).Where("tx_id = ?", txid).Find(&payment)
 	return payment
 }
 func ConfirmWithdraw(pid int, txid string) {

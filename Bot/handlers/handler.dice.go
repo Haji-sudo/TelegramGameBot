@@ -77,15 +77,25 @@ func HandelDice(ctx b.Context, user *UserRedis) {
 			if cube.Dice.Value == user.Dice.Guess1 {
 				ctx.Send("You Win 4x")
 				BetWin(ctx.Chat().ID, user.AmountofBet*4)
+				resText := fmt.Sprintf(`Win 4x 
+				Your Guess : %v`, user.Dice.Guess1)
+				SaveGameHistroy(ctx.Chat().ID, Dice, user.AmountofBet, resText)
 			} else {
 				ctx.Send("You Lost")
+				SaveGameHistroy(ctx.Chat().ID, Dice, user.AmountofBet, "Lose 0x")
 			}
 		} else {
 			if cube.Dice.Value == user.Dice.Guess1 || cube.Dice.Value == user.Dice.Guess2 {
 				ctx.Send("You Win 2x")
 				BetWin(ctx.Chat().ID, user.AmountofBet*2)
+				resText := fmt.Sprintf(`Win 2x 
+				First Guess : %v
+				Second Guess : %v
+				Dice result : %v`, user.Dice.Guess1, user.Dice.Guess2, cube.Dice.Value)
+				SaveGameHistroy(ctx.Chat().ID, Dice, user.AmountofBet, resText)
 			} else {
 				ctx.Send("You Lost")
+				SaveGameHistroy(ctx.Chat().ID, Dice, user.AmountofBet, "Lose 0x")
 			}
 		}
 		user.ChangeLocation(Games)

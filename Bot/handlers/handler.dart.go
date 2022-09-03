@@ -50,21 +50,27 @@ func HandelDart(ctx b.Context, user *UserRedis) {
 		switch dart.Dice.Value {
 		case 6:
 			BetWin(ctx.Chat().ID, user.AmountofBet*2)
-			ctx.Send(WonText(2))
+			ctx.Send(WinText(2))
+			SaveGameHistroy(ctx.Chat().ID, Dart, user.AmountofBet, `Win 2x`)
 		case 5:
 			BetWin(ctx.Chat().ID, user.AmountofBet*1.3)
-			ctx.Send(WonText(1.3))
+			ctx.Send(WinText(1.3))
+			SaveGameHistroy(ctx.Chat().ID, Dart, user.AmountofBet, `Win 1.3x`)
 		case 4:
 			BetWin(ctx.Chat().ID, user.AmountofBet*0.9)
-			ctx.Send(WonText(0.9))
+			ctx.Send(WinText(0.9))
+			SaveGameHistroy(ctx.Chat().ID, Dart, user.AmountofBet, `Lose 0.9x`)
 		case 3:
 			BetWin(ctx.Chat().ID, user.AmountofBet*0.6)
-			ctx.Send(WonText(0.6))
+			SaveGameHistroy(ctx.Chat().ID, Dart, user.AmountofBet, `Lose 0.6x`)
+			ctx.Send(WinText(0.6))
 		case 2:
 			BetWin(ctx.Chat().ID, user.AmountofBet*0.3)
-			ctx.Send(WonText(0.3))
+			SaveGameHistroy(ctx.Chat().ID, Dart, user.AmountofBet, `Lose 0.3x`)
+			ctx.Send(WinText(0.3))
 		default:
 			ctx.Send("You Lost")
+			SaveGameHistroy(ctx.Chat().ID, Dart, user.AmountofBet, `Lose 0x`)
 		}
 		user.ChangeLocation(Games)
 		ctx.Send(GameBoard(), GameMenu)

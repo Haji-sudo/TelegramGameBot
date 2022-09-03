@@ -58,7 +58,7 @@ func ConfirmWithdrawTextChannel(userid int64, amount float32, txid string) strin
 	
 	Amount requested : %v
 	
-	TXID : https://blockchair.com/dogecoin/transaction/%v`, CreateLinkWithUserID(userid), amount, txid)
+	TXID : https://chain.so/tx/DOGETEST/%v`, CreateLinkWithUserID(userid), amount, txid)
 }
 func RejectWithdrawTextChannel(userid int64, amount float32, pid int) string {
 	return fmt.Sprintf(`**    ❌ Rejected**
@@ -72,7 +72,7 @@ func RejectWithdrawTextChannel(userid int64, amount float32, pid int) string {
 func ResponseConfirmWithdraw(txid string) string {
 	return fmt.Sprintf(`Your withdrawal has been confirmed and sent
 	
-	TXID : https://blockchair.com/dogecoin/transaction/%v`, txid)
+	TXID : https://chain.so/tx/DOGETEST/%v`, txid)
 }
 func ResponseRejectWithdraw(pid int) string {
 	return fmt.Sprintf(`Your withdrawal request was rejected
@@ -192,8 +192,8 @@ func BowlText2(amount_bet float32) string {
 	
 	✅Confirm Bet `, amount_bet)
 }
-func WonText(won_rate float32) string {
-	return fmt.Sprintf(`You Won %vx`, won_rate)
+func WinText(won_rate float32) string {
+	return fmt.Sprintf(`Win %vx`, won_rate)
 }
 func DartText1(userid int64) string {
 	balance := UserBalance(userid)

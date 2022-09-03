@@ -25,6 +25,13 @@ const (
 	Minbet float64 = 1
 	Maxbet float64 = 200
 )
+const (
+	Dice   = "Dice 🎲"
+	Bowl   = "Bowling 🎳"
+	Basket = "Basketball 🏀"
+	Dart   = "Dart 🎯"
+	Slot   = "Slot 🎰"
+)
 
 func GetRandomWinNumber() float32 {
 	var rnd = []float32{1.01, 1.02, 1.03, 1.04, 1.05, 1.06, 1.07, 1.08, 1.09,

@@ -20,15 +20,17 @@ var (
 	BtnDepositHistory  = MainMenu.Text("📈 Deposit History")
 	BtnWithdrawHistory = MainMenu.Text("📉 Withdraw History")
 	BtnGamesHistory    = MainMenu.Text("🧨 Games History")
-
 	BtnHome            = MainMenu.Text("Home 🏠")
-	BtnDice            = GameMenu.Text("Dice 🎲")
-	BtnBowling         = GameMenu.Text("Bowling 🎳")
-	BtnDart            = GameMenu.Text("Dart 🎯")
-	BtnSlot            = GameMenu.Text("Slot 🎰")
-	BtnBalance         = GameMenu.Text("💰 Balance")
-	BtnConfirm         = GameMenu.Text("✅ Confirm")
-	BtnBasketball      = GameMenu.Text("Basketball 🏀")
+
+	BtnDice       = GameMenu.Text("Dice 🎲")
+	BtnBowling    = GameMenu.Text("Bowling 🎳")
+	BtnDart       = GameMenu.Text("Dart 🎯")
+	BtnSlot       = GameMenu.Text("Slot 🎰")
+	BtnBasketball = GameMenu.Text("Basketball 🏀")
+
+	BtnBalance = GameMenu.Text("💰 Balance")
+	BtnConfirm = GameMenu.Text("✅ Confirm")
+
 	BtnConfirmWithdraw = WithdrawInlineKeyboard.Data("✅ Confirm", "confirm")
 	BtnRejectWithdraw  = WithdrawInlineKeyboard.Data("❌ Reject", "reject")
 )

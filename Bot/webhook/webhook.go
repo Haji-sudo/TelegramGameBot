@@ -23,7 +23,7 @@ type NotifResponse struct {
 		AmountSent     string `json:"amount_sent"`
 		AmountReceived string `json:"amount_received"`
 		Txid           string `json:"txid"`
-		Confirmations  string `json:"confirmations"`
+		Confirmations  int    `json:"confirmations"`
 		IsGreen        bool   `json:"is_green"`
 	} `json:"data"`
 }
@@ -34,16 +34,20 @@ func Serve(Bot *telebot.Bot) {
 		b, _ := io.ReadAll(r.Body)
 		result := NotifResponse{}
 		json.Unmarshal([]byte(b), &result)
-		confirms, _ := strconv.Atoi(result.Data.Confirmations)
-		if confirms == 0 {
+		if result.Data.Confirmations == 1 {
 			amount, _ := strconv.ParseFloat(result.Data.BalanceChange, 64)
-			userid := h.SubmitDeposit(result.Data.Address, float32(amount), result.Data.Txid)
-			h.SendToUser(Bot, userid, h.ResponseSubmitDepoist(amount, result.Data.Txid))
-		} else if confirms == 10 {
+			if amount > 0 {
+				userid := h.SubmitDeposit(result.Data.Address, float32(amount), result.Data.Txid)
+				h.SendToUser(Bot, userid, h.ResponseSubmitDepoist(amount, result.Data.Txid))
+			}
+		} else if result.Data.Confirmations == 10 {
 			amount, _ := strconv.ParseFloat(result.Data.BalanceChange, 64)
-			userid := h.ConfirmDeposit(result.Data.Txid)
-			h.SendToUser(Bot, userid, h.ResponseSubmitDepoist(amount, result.Data.Txid))
+			if amount > 0 {
+				userid := h.ConfirmDeposit(result.Data.Txid)
+				h.SendToUser(Bot, userid, h.ResponseSubmitDepoist(amount, result.Data.Txid))
+			}
 		}
+
 	})
 	log.Fatal(http.ListenAndServe(":8585", nil))
 }
