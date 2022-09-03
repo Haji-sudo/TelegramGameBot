@@ -50,10 +50,13 @@ func HandelBasket(ctx b.Context, user *UserRedis) {
 
 		switch basket.Dice.Value {
 		case 4, 5: //Win
+			SaveGameHistroy(ctx.Chat().ID, Basket, user.AmountofBet, `Win 1.8x`)
 			BetWin(ctx.Chat().ID, user.AmountofBet*1.8)
-			ctx.Send(WonText(1.8))
+			ctx.Send(WinText(1.8))
+			SaveGameHistroy(ctx.Chat().ID, Basket, user.AmountofBet, `Win 1.8x`)
 		case 1, 2, 3: //Lose
 			ctx.Send("You Lost")
+			SaveGameHistroy(ctx.Chat().ID, Basket, user.AmountofBet, `Lose 0x`)
 		default:
 			ctx.Send("Return")
 
