@@ -15,10 +15,9 @@ var (
 	BotUsername          string  = "GetInfocryptoBot"
 	WithdrawChannelID    int64   = -100
 	TransactionChannelID int64   = -100
-	GamesChannelID       int64   = -100
 )
 
-func InitBot(token, username, gift, with_ch, tx_ch, game_ch, admins string) *tele.Bot {
+func InitBot(token, username, gift, with_ch, tx_ch, admins string) *tele.Bot {
 	Token = token
 	BotUsername = username
 	n, _ := strconv.ParseFloat(gift, 32)
@@ -29,9 +28,6 @@ func InitBot(token, username, gift, with_ch, tx_ch, game_ch, admins string) *tel
 
 	n2, _ = strconv.ParseInt(tx_ch, 10, 64)
 	TransactionChannelID = n2
-
-	n2, _ = strconv.ParseInt(game_ch, 10, 64)
-	GamesChannelID = n2
 
 	ad := strings.Split(admins, ",")
 	for _, a := range ad {

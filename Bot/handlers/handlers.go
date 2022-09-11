@@ -175,6 +175,7 @@ func (h Handler) Init() {
 			ConfirmWithdraw(pid, res.Data.Txid)
 			ctx.Edit(ConfirmWithdrawTextChannel(w.UserRefer, w.Amount, res.Data.Txid), b.ModeMarkdown)
 			SendToUser(h.Bot, w.UserRefer, ResponseConfirmWithdraw(res.Data.Txid))
+			SendToChannel(h.Bot, c.TransactionChannelID, ResponseConfirmWithdraw(res.Data.Txid))
 		}
 
 		return nil

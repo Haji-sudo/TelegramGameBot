@@ -45,7 +45,7 @@ func NewHandler(c handlers.Config) handlers.Handler {
 		RDB: r.InitRedisdb(c.Redis.User, c.Redis.Pass, c.Redis.Server, c.Redis.Port, c.Redis.DB),
 		CTX: context.Background(),
 		DB:  p.InitPostgredb(c.Postgresql.User, c.Postgresql.Pass, c.Postgresql.Server, c.Postgresql.Port, c.Postgresql.DB),
-		Bot: config.InitBot(c.Bot.Token, c.Bot.Username, c.Bot.Gift, c.Bot.WithdrawChannelID, c.Bot.TransactionChannelID, c.Bot.GamesChannelID, c.Bot.Admins),
+		Bot: config.InitBot(c.Bot.Token, c.Bot.Username, c.Bot.Gift, c.Bot.WithdrawChannelID, c.Bot.TransactionChannelID, c.Bot.Admins),
 	}
 	return db
 

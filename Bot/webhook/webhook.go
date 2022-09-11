@@ -1,6 +1,7 @@
 package webhook
 
 import (
+	"dogegambling/config"
 	h "dogegambling/handlers"
 	"encoding/json"
 	"io"
@@ -39,6 +40,7 @@ func Serve(Bot *telebot.Bot) {
 			if amount > 0 {
 				userid := h.SubmitDeposit(result.Data.Address, float32(amount), result.Data.Txid)
 				h.SendToUser(Bot, userid, h.ResponseSubmitDepoist(amount, result.Data.Txid))
+				h.SendToChannel(Bot, config.TransactionChannelID, h.ResponseConfirmDepoist(amount, result.Data.Txid))
 			}
 		} else if result.Data.Confirmations == 10 {
 			amount, _ := strconv.ParseFloat(result.Data.BalanceChange, 64)

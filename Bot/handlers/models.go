@@ -66,7 +66,6 @@ type Config struct {
 		Gift                 string `yaml:"gift"`
 		WithdrawChannelID    string `yaml:"withdrawchannelID"`
 		TransactionChannelID string `yaml:"transactionchannelID"`
-		GamesChannelID       string `yaml:"gameschannelId"`
 		Admins               string `yaml:"admins"`
 	}
 	Redis struct {
