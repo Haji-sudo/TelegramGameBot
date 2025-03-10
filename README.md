@@ -1,2 +1,2 @@
-# GamblingBot
+# TelegramGameBot
  
